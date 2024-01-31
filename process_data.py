@@ -1,6 +1,7 @@
 import argparse
 import xml.etree.ElementTree as ET
 import cairosvg
+import os
 
 
 def kanjivg_to_svg(root):
@@ -57,14 +58,14 @@ if __name__ == "__main__":
     parser.add_argument(
         "--kanjidic2_dir",
         type=str,
-        required=True,
+        default="../kanjidic2.xml",
         help="Path to the kanjidic2.xml file that contains the meanings of kanji characters"
     )
 
     parser.add_argument(
         "--kanjivg_dir",
         type=str,
-        required=True,
+        default="../kanjivg-20220427.xml",
         help="Path to the kanjivg.xml file that contain the strokes of the kanji characters in vector format"
     )
 
@@ -74,9 +75,12 @@ if __name__ == "__main__":
 
     kanji_to_meanings = get_kanji_to_meanings(args.kanjidic2_dir)
 
+    os.makedirs(args.output_dir, exist_ok=True)
+    os.makedirs(os.path.join(args.output_dir, "transparent"), exist_ok=True)
+    os.makedirs(os.path.join(args.output_dir, "white_background"), exist_ok=True)
 
-
-    # os.makedirs(args.output_dir, exist_ok=True)
-
-    # with open(os.path.join(args.output_dir, "metadata.jsonl"), "w") as output_metadata:
+    with open(os.path.join(args.output_dir, "metadata.jsonl"), "w") as output_metadata:
+        for root in kanjivg_root:
+            kanji_character = hex_to_kanji(root.attrib["id"].split("_")[-1])
+            svg_to_png(kanjivg_to_svg(root), os.path.join(args.output_dir, "transparent", f"{kanji_character}.png"))
 
