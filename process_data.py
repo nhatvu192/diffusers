@@ -82,5 +82,8 @@ if __name__ == "__main__":
     with open(os.path.join(args.output_dir, "metadata.jsonl"), "w") as output_metadata:
         for root in kanjivg_root:
             kanji_character = hex_to_kanji(root.attrib["id"].split("_")[-1])
-            svg_to_png(kanjivg_to_svg(root), os.path.join(args.output_dir, "transparent", f"{kanji_character}.png"))
+            if kanji_character in kanji_to_meanings:
+                transparent_path = os.path.join(args.output_dir, "transparent", f"{kanji_character}.png")
+                svg_to_png(kanjivg_to_svg(root), transparent_path)
+
 
