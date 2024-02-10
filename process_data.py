@@ -109,3 +109,11 @@ if __name__ == "__main__":
                             f"{kanji_character}.png",
                         )
                     )
+
+                image_relative_path = os.path.join(
+                    "white_background", f"{kanji_character}.png"
+                )
+
+                output_metadata.write(
+                    f'{{"file_name": "{image_relative_path}", "text": f"{kanji_character}"}}\n'
+                )
