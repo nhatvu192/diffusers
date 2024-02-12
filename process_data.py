@@ -94,6 +94,9 @@ if __name__ == "__main__":
         for root in tqdm(kanjivg_root):
             kanji_character = hex_to_kanji(root.attrib["id"].split("_")[-1])
             if kanji_character in kanji_to_meanings:
+                meanings = kanji_to_meanings[kanji_character]
+                meanings = ", ".join(meanings)
+
                 transparent_path = os.path.join(
                     args.output_dir, "transparent", f"{kanji_character}.png"
                 )
@@ -115,5 +118,5 @@ if __name__ == "__main__":
                 )
 
                 output_metadata.write(
-                    f'{{"file_name": "{image_relative_path}", "text": f"{kanji_character}"}}\n'
+                    f'{{"file_name": "{image_relative_path}", "text": "{meanings}"}}\n'
                 )
